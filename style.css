@@ -1,0 +1,15 @@
+* {
+  color: red;
+  font-family: 'Helvetica';
+  outline: 1px dashed green;
+  background-color: green;
+}
+
+img {
+  width: 150px;
+  margin: 25px;
+}
+
+li {
+  color: hotpink;
+}
