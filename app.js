@@ -137,25 +137,47 @@ function handleClick(event) {
   console.log(totalClicks, 'total clicks');
   //make the clicks stop at 25
   if (totalClicks > 24) {
-    imgContainer.removeEventListener('click', handleClick);
     //show the list after the last click
     chart();
+    console.log('survey complete');
+
+  } else {
+    totalClicks += 1;
+    var setImgArray = JSON.stringify(imgArray);
+    localStorage.setItem('imgArray' , setImgArray);
+    var clickTotal = JSON.stringify(totalClicks);
+    localStorage.setItem('clicks' , clickTotal);
+
+    for (var i = 0; i < imgArray.length; i++) {
+      if (event.target.id === imgArray[i].name) {
+        imgArray[i].votes += 1;
+        console.log(event.target.id + ' has ' + imgArray[i].votes + ' votes in ' + imgArray[i].views + ' views.');
+      }
+    }
+    displayPics();
   }
   //this is how we direct the user to click on a specific image
   if (event.target.id === 'image_container') {
     return alert('Need to click on an image.');
   }
   //start to add up the total clicks and log it to the console
-  totalClicks += 1;
-  for (var i = 0; i < imgArray.length; i++) {
-    if (event.target.id === imgArray[i].name) {
-      imgArray[i].votes += 1;
-      console.log(event.target.id + ' has ' + imgArray[i].votes + ' votes in ' + imgArray[i].views + ' views.');
-    }
-  }
-  displayPics();
+
+}
+
+if(localStorage.imgArray) {
+  var getImgArray = localStorage.getItem('imgArray');
+  imgArray = JSON.parse(getImgArray);
+  var clickTotal = localStorage.getItem('clicks');
+  totalClicks = JSON.parse(clickTotal);
 }
 
 //event listener
 imgContainer.addEventListener('click', handleClick);
 displayPics();
+
+var reset = document.getElementById('start-new');
+reset.onclick = function() {
+  localStorage.clear();
+  totalClicks = 0;
+  console.log('new survery');
+};
